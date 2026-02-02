@@ -41,6 +41,204 @@
     <div class="avatar-preview">
       <div class="avatar-container">
         <svg viewBox="0 0 200 300" class="avatar-svg">
+          <!-- Role-specific background elements -->
+
+          <!-- Estudiante: Pasillo de Universidad -->
+          <g *ngIf="avatar.role === 'estudiante'">
+            <!-- Piso del pasillo -->
+            <rect x="0" y="250" width="200" height="50" fill="#D4D4D4" />
+            <!-- Baldosas del piso -->
+            <line x1="0" y1="265" x2="200" y2="265" stroke="#B8B8B8" stroke-width="1" />
+            <line x1="0" y1="280" x2="200" y2="280" stroke="#B8B8B8" stroke-width="1" />
+            <line x1="50" y1="250" x2="50" y2="300" stroke="#B8B8B8" stroke-width="1" />
+            <line x1="100" y1="250" x2="100" y2="300" stroke="#B8B8B8" stroke-width="1" />
+            <line x1="150" y1="250" x2="150" y2="300" stroke="#B8B8B8" stroke-width="1" />
+
+            <!-- Pared izquierda con perspectiva -->
+            <path d="M 0 0 L 0 250 L 30 240 L 30 20 Z" fill="#E8E4D9" />
+            <!-- Pared derecha con perspectiva -->
+            <path d="M 200 0 L 200 250 L 170 240 L 170 20 Z" fill="#E8E4D9" />
+
+            <!-- Pared del fondo -->
+            <rect x="30" y="0" width="140" height="120" fill="#F5F1E6" />
+
+            <!-- Ventanas en el pasillo (izquierda) -->
+            <rect x="5" y="40" width="20" height="30" fill="#B8D8E8" rx="2" />
+            <line x1="5" y1="55" x2="25" y2="55" stroke="#7A98A8" stroke-width="1" />
+            <line x1="15" y1="40" x2="15" y2="70" stroke="#7A98A8" stroke-width="1" />
+
+            <rect x="5" y="90" width="20" height="30" fill="#B8D8E8" rx="2" />
+            <line x1="5" y1="105" x2="25" y2="105" stroke="#7A98A8" stroke-width="1" />
+            <line x1="15" y1="90" x2="15" y2="120" stroke="#7A98A8" stroke-width="1" />
+
+            <!-- Puerta en el fondo -->
+            <rect x="70" y="30" width="35" height="75" fill="#8B4513" rx="2" />
+            <rect x="73" y="33" width="29" height="69" fill="#A0522D" rx="1" />
+            <circle cx="98" cy="72" r="2" fill="#DAA520" />
+
+            <!-- Cartelera en pared derecha -->
+            <rect x="175" y="60" width="20" height="25" fill="#FFFFFF" stroke="#333" stroke-width="1" />
+            <rect x="177" y="63" width="16" height="3" fill="#667eea" />
+            <rect x="177" y="68" width="12" height="2" fill="#333" opacity="0.3" />
+            <rect x="177" y="72" width="14" height="2" fill="#333" opacity="0.3" />
+            <rect x="177" y="76" width="10" height="2" fill="#333" opacity="0.3" />
+          </g>
+
+          <!-- Docente: Aula con Tablero -->
+          <g *ngIf="avatar.role === 'docente'">
+            <!-- Piso del aula -->
+            <rect x="0" y="240" width="200" height="60" fill="#C9B896" />
+            <!-- Líneas del piso -->
+            <line x1="0" y1="260" x2="200" y2="260" stroke="#B0A080" stroke-width="1" opacity="0.5" />
+            <line x1="0" y1="280" x2="200" y2="280" stroke="#B0A080" stroke-width="1" opacity="0.5" />
+
+            <!-- Paredes laterales -->
+            <rect x="0" y="0" width="25" height="240" fill="#F0E6D2" />
+            <rect x="175" y="0" width="25" height="240" fill="#F0E6D2" />
+
+            <!-- Pared del fondo -->
+            <rect x="25" y="0" width="150" height="120" fill="#FAF5E9" />
+
+            <!-- Ventanas del aula (izquierda) -->
+            <rect x="3" y="30" width="19" height="45" fill="#A8D5E8" rx="2" />
+            <line x1="3" y1="52" x2="22" y2="52" stroke="#7A98A8" stroke-width="1.5" />
+            <line x1="12" y1="30" x2="12" y2="75" stroke="#7A98A8" stroke-width="1.5" />
+
+            <rect x="3" y="100" width="19" height="45" fill="#A8D5E8" rx="2" />
+            <line x1="3" y1="122" x2="22" y2="122" stroke="#7A98A8" stroke-width="1.5" />
+            <line x1="12" y1="100" x2="12" y2="145" stroke="#7A98A8" stroke-width="1.5" />
+
+            <!-- Ventana derecha -->
+            <rect x="178" y="30" width="19" height="45" fill="#A8D5E8" rx="2" />
+            <line x1="178" y1="52" x2="197" y2="52" stroke="#7A98A8" stroke-width="1.5" />
+            <line x1="187" y1="30" x2="187" y2="75" stroke="#7A98A8" stroke-width="1.5" />
+
+            <!-- Marco del tablero (verde) -->
+            <rect x="40" y="20" width="120" height="85" fill="#2d5016" rx="3" />
+            <!-- Superficie del tablero (verde pizarra) -->
+            <rect x="45" y="25" width="110" height="75" fill="#1a4d2e" rx="2" />
+
+            <!-- Contenido escrito en el tablero -->
+            <text x="100" y="45" font-family="Arial" font-size="8" fill="#FFFFFF" text-anchor="middle" font-weight="bold">Yo Te Protejo</text>
+            <line x1="55" y1="55" x2="145" y2="55" stroke="#4a7c59" stroke-width="0.5" />
+            <line x1="55" y1="65" x2="130" y2="65" stroke="#4a7c59" stroke-width="0.5" />
+            <line x1="55" y1="75" x2="140" y2="75" stroke="#4a7c59" stroke-width="0.5" />
+            <line x1="55" y1="85" x2="120" y2="85" stroke="#4a7c59" stroke-width="0.5" />
+
+            <!-- Borrador y tizas -->
+            <rect x="140" y="107" width="15" height="6" fill="#f4e4c1" rx="1" />
+            <rect x="125" y="108" width="3" height="8" fill="#ffffff" />
+            <rect x="130" y="108" width="3" height="8" fill="#ffd700" />
+            <rect x="135" y="108" width="3" height="8" fill="#ff6b6b" />
+
+            <!-- Sugerencia de pupitres (esquinas) -->
+            <rect x="5" y="220" width="30" height="20" fill="#8B7355" rx="2" opacity="0.6" />
+            <rect x="165" y="220" width="30" height="20" fill="#8B7355" rx="2" opacity="0.6" />
+          </g>
+
+          <!-- Administrativo: Oficina con Escritorio y Ventana -->
+          <g *ngIf="avatar.role === 'administrativo'">
+            <!-- Piso de oficina -->
+            <rect x="0" y="240" width="200" height="60" fill="#8B8680" />
+            <!-- Textura del piso -->
+            <rect x="0" y="260" width="200" height="2" fill="#6B6660" opacity="0.3" />
+            <rect x="0" y="280" width="200" height="2" fill="#6B6660" opacity="0.3" />
+
+            <!-- Paredes -->
+            <rect x="0" y="0" width="200" height="120" fill="#E8E4D9" />
+
+            <!-- Ventana grande en el fondo -->
+            <rect x="30" y="10" width="70" height="80" fill="#87CEEB" rx="3" />
+            <!-- Marco de ventana -->
+            <rect x="30" y="10" width="70" height="80" fill="none" stroke="#5A5A5A" stroke-width="3" rx="3" />
+            <!-- Divisiones de ventana -->
+            <line x1="65" y1="10" x2="65" y2="90" stroke="#5A5A5A" stroke-width="2" />
+            <line x1="30" y1="50" x2="100" y2="50" stroke="#5A5A5A" stroke-width="2" />
+            <!-- Nubes visibles por la ventana -->
+            <ellipse cx="50" cy="30" rx="8" ry="5" fill="#FFFFFF" opacity="0.7" />
+            <ellipse cx="55" cy="32" rx="6" ry="4" fill="#FFFFFF" opacity="0.7" />
+            <ellipse cx="75" cy="65" rx="9" ry="6" fill="#FFFFFF" opacity="0.7" />
+            <ellipse cx="80" cy="67" rx="7" ry="5" fill="#FFFFFF" opacity="0.7" />
+
+            <!-- Estante de archivos en la pared derecha -->
+            <rect x="130" y="25" width="60" height="70" fill="#654321" />
+            <rect x="132" y="27" width="56" height="20" fill="#7A5230" />
+            <rect x="132" y="49" width="56" height="20" fill="#7A5230" />
+            <rect x="132" y="71" width="56" height="20" fill="#7A5230" />
+            <!-- Carpetas/libros en el estante -->
+            <rect x="135" y="30" width="8" height="15" fill="#3498DB" />
+            <rect x="145" y="30" width="8" height="15" fill="#E74C3C" />
+            <rect x="155" y="30" width="8" height="15" fill="#2ECC71" />
+            <rect x="135" y="52" width="8" height="15" fill="#F39C12" />
+            <rect x="145" y="52" width="8" height="15" fill="#9B59B6" />
+            <rect x="155" y="52" width="8" height="15" fill="#E67E22" />
+
+            <!-- Planta en la esquina -->
+            <ellipse cx="15" cy="235" rx="12" ry="8" fill="#8B4513" />
+            <ellipse cx="15" cy="233" rx="10" ry="6" fill="#A0522D" />
+            <path d="M 15 220 Q 10 225 12 233" fill="#27AE60" />
+            <path d="M 15 220 Q 20 225 18 233" fill="#229954" />
+            <path d="M 15 218 Q 15 223 15 233" fill="#2ECC71" />
+
+            <!-- Escritorio (superficie más amplia) -->
+            <rect x="0" y="110" width="200" height="30" fill="#8B4513" rx="2" />
+            <rect x="0" y="110" width="200" height="5" fill="#A0522D" rx="2" />
+            <!-- Sombra del escritorio -->
+            <rect x="0" y="138" width="200" height="3" fill="#5C4033" opacity="0.3" />
+
+            <!-- Monitor (en la derecha) -->
+            <rect x="120" y="65" width="70" height="45" fill="#1a1a1a" rx="3" />
+            <!-- Pantalla -->
+            <rect x="123" y="68" width="64" height="36" fill="#2980b9" rx="2" />
+            <!-- Brillo de pantalla -->
+            <rect x="125" y="70" width="25" height="18" fill="#3498db" opacity="0.4" rx="1" />
+            <!-- Contenido de pantalla (gráfico simple) -->
+            <rect x="127" y="75" width="56" height="2" fill="#ecf0f1" opacity="0.6" />
+            <rect x="127" y="79" width="40" height="2" fill="#ecf0f1" opacity="0.6" />
+            <rect x="127" y="83" width="48" height="2" fill="#ecf0f1" opacity="0.6" />
+            <!-- Base del monitor -->
+            <rect x="150" y="104" width="10" height="6" fill="#2c3e50" />
+            <!-- Pie del monitor -->
+            <rect x="140" y="109" width="30" height="2" fill="#34495e" rx="1" />
+
+            <!-- Teclado (en la derecha) -->
+            <rect x="110" y="115" width="55" height="15" fill="#2c3e50" rx="2" />
+            <rect x="112" y="117" width="51" height="11" fill="#34495e" rx="1" />
+            <!-- Teclas -->
+            <rect x="114" y="119" width="3" height="3" fill="#95a5a6" rx="0.5" />
+            <rect x="118" y="119" width="3" height="3" fill="#95a5a6" rx="0.5" />
+            <rect x="122" y="119" width="3" height="3" fill="#95a5a6" rx="0.5" />
+            <rect x="126" y="119" width="3" height="3" fill="#95a5a6" rx="0.5" />
+            <rect x="130" y="119" width="3" height="3" fill="#95a5a6" rx="0.5" />
+            <rect x="114" y="123" width="3" height="3" fill="#95a5a6" rx="0.5" />
+            <rect x="118" y="123" width="3" height="3" fill="#95a5a6" rx="0.5" />
+            <rect x="122" y="123" width="3" height="3" fill="#95a5a6" rx="0.5" />
+
+            <!-- Mouse (a la derecha del teclado) -->
+            <ellipse cx="175" cy="122" rx="5" ry="7" fill="#2c3e50" />
+            <ellipse cx="175" cy="121" rx="4" ry="6" fill="#7f8c8d" />
+            <line x1="175" y1="118" x2="175" y2="124" stroke="#5a6266" stroke-width="0.5" />
+
+            <!-- Papeles/documentos en la izquierda del escritorio -->
+            <rect x="15" y="113" width="25" height="18" fill="#ecf0f1" rx="1" opacity="0.9" />
+            <rect x="18" y="115" width="19" height="1" fill="#bdc3c7" />
+            <rect x="18" y="117" width="16" height="1" fill="#bdc3c7" />
+            <rect x="18" y="119" width="18" height="1" fill="#bdc3c7" />
+
+            <!-- Porta lápices a la izquierda -->
+            <rect x="45" y="117" width="12" height="14" fill="#34495e" rx="1" />
+            <rect x="45" y="117" width="12" height="2" fill="#2c3e50" />
+            <!-- Lápices -->
+            <rect x="48" y="113" width="2" height="10" fill="#F1C40F" />
+            <rect x="51" y="115" width="2" height="8" fill="#E74C3C" />
+            <rect x="54" y="114" width="2" height="9" fill="#3498DB" />
+
+            <!-- Lámpara de escritorio -->
+            <line x1="70" y1="110" x2="70" y2="95" stroke="#2c3e50" stroke-width="2" />
+            <path d="M 60 95 L 70 90 L 80 95 Z" fill="#F39C12" />
+            <ellipse cx="70" cy="110" rx="6" ry="3" fill="#34495e" />
+          </g>
+
           <!-- Hair (behind everything) -->
           <g *ngIf="avatar.hairStyle && avatar.hairStyle !== 'bald'">
             <!-- Short Hair - Simple cap -->
@@ -119,20 +317,6 @@
           
           <!-- Mouth -->
           <path d="M 90 105 Q 100 110 110 105" stroke="#000000" stroke-width="2" fill="none" />
-          
-          <!-- Role Badge -->
-          <g *ngIf="avatar.role === 'estudiante'">
-            <circle cx="135" cy="60" r="18" fill="#4A90E2" stroke="#fff" stroke-width="2"/>
-            <text x="135" y="67" text-anchor="middle" font-size="20" fill="#fff">🎓</text>
-          </g>
-          <g *ngIf="avatar.role === 'docente'">
-            <circle cx="135" cy="60" r="18" fill="#E74C3C" stroke="#fff" stroke-width="2"/>
-            <text x="135" y="67" text-anchor="middle" font-size="20" fill="#fff">👨‍🏫</text>
-          </g>
-          <g *ngIf="avatar.role === 'administrativo'">
-            <circle cx="135" cy="60" r="18" fill="#2ECC71" stroke="#fff" stroke-width="2"/>
-            <text x="135" y="67" text-anchor="middle" font-size="20" fill="#fff">💼</text>
-          </g>
           
           <!-- Neck -->
           <rect x="85" y="125" width="30" height="15" [attr.fill]="avatar.skinColor || '#F4C4A0'" />
@@ -224,6 +408,25 @@
           <!-- Shoes -->
           <ellipse cx="80" cy="285" rx="18" ry="8" fill="#333333" />
           <ellipse cx="120" cy="285" rx="18" ry="8" fill="#333333" />
+
+          <!-- Estudiante: Morral/Mochila en el suelo -->
+          <g *ngIf="avatar.role === 'estudiante'">
+            <!-- Cuerpo principal del morral -->
+            <path d="M 140 260 L 140 290 L 180 290 L 180 260 Z" fill="#4A90E2" stroke="#2c5aa0" stroke-width="2" />
+            <!-- Bolsillo frontal -->
+            <path d="M 145 265 L 145 280 L 175 280 L 175 265 Z" fill="#3a7bc8" stroke="#2c5aa0" stroke-width="1" />
+            <!-- Cierre del bolsillo -->
+            <line x1="150" y1="272" x2="170" y2="272" stroke="#2c5aa0" stroke-width="2" />
+            <!-- Correa izquierda -->
+            <path d="M 145 260 Q 140 250 140 240" stroke="#2c5aa0" stroke-width="3" fill="none" />
+            <!-- Correa derecha -->
+            <path d="M 175 260 Q 180 250 180 240" stroke="#2c5aa0" stroke-width="3" fill="none" />
+            <!-- Base del morral -->
+            <ellipse cx="160" cy="290" rx="20" ry="5" fill="#2c5aa0" opacity="0.7" />
+            <!-- Detalles de costuras -->
+            <line x1="142" y1="265" x2="142" y2="288" stroke="#2c5aa0" stroke-width="1" opacity="0.5" />
+            <line x1="178" y1="265" x2="178" y2="288" stroke="#2c5aa0" stroke-width="1" opacity="0.5" />
+          </g>
         </svg>
       </div>
 
