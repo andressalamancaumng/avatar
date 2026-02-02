@@ -1,8 +1,40 @@
 <!-- src/app/avatar-creator/avatar-creator.component.html -->
-<div class="avatar-creator">
+
+<!-- Loading Screen -->
+<div class="loading-screen" *ngIf="isLoading">
+  <div class="loading-content">
+    <div class="dna-container">
+      <div class="dna-helix">
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+      </div>
+    </div>
+    <h1 class="loading-title">Cargando el ADN del campus</h1>
+    <div class="loading-bar-container">
+      <div class="loading-bar" [style.width.%]="loadingProgress"></div>
+    </div>
+    <p class="loading-percentage">{{ loadingProgress | number:'1.0-0' }}%</p>
+  </div>
+</div>
+
+<!-- Main App -->
+<div class="avatar-creator" *ngIf="!isLoading">
   <div class="header">
     <h1>🎮 Creador de Avatar</h1>
-    <p>Personaliza tu personaje</p>
+    <p>Personaliza tu personaje del campus</p>
+    
+    <!-- Commitment Progress Bar -->
+    <div class="commitment-section">
+      <label class="commitment-label">Barra de Compromiso</label>
+      <div class="commitment-message">{{ commitmentMessage }}</div>
+      <div class="commitment-bar-container">
+        <div class="commitment-bar" [style.width.%]="commitmentProgress">
+          <span class="commitment-percentage" *ngIf="commitmentProgress > 10">
+            {{ commitmentProgress | number:'1.0-0' }}%
+          </span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="content">
@@ -12,31 +44,31 @@
       <div class="avatar-container">
         <svg viewBox="0 0 200 300" class="avatar-svg">
           <!-- Head -->
-          <ellipse cx="100" cy="80" rx="45" ry="50" [attr.fill]="avatar.skinColor" />
+          <ellipse cx="100" cy="80" rx="45" ry="50" [attr.fill]="avatar.skinColor || '#F4C4A0'" />
           
           <!-- Hair -->
-          <g *ngIf="avatar.hairStyle !== 'bald'">
+          <g *ngIf="avatar.hairStyle && avatar.hairStyle !== 'bald'">
             <!-- Short Hair -->
             <ellipse *ngIf="avatar.hairStyle === 'short'" 
                      cx="100" cy="55" rx="50" ry="30" 
-                     [attr.fill]="avatar.hairColor" />
+                     [attr.fill]="avatar.hairColor || '#3B2414'" />
             
             <!-- Medium Hair -->
             <g *ngIf="avatar.hairStyle === 'medium'">
-              <ellipse cx="100" cy="55" rx="52" ry="35" [attr.fill]="avatar.hairColor" />
-              <rect x="50" y="65" width="100" height="30" [attr.fill]="avatar.hairColor" />
+              <ellipse cx="100" cy="55" rx="52" ry="35" [attr.fill]="avatar.hairColor || '#3B2414'" />
+              <rect x="50" y="65" width="100" height="30" [attr.fill]="avatar.hairColor || '#3B2414'" />
             </g>
             
             <!-- Long Hair -->
             <g *ngIf="avatar.hairStyle === 'long'">
-              <ellipse cx="100" cy="55" rx="54" ry="35" [attr.fill]="avatar.hairColor" />
-              <rect x="48" y="65" width="104" height="60" [attr.fill]="avatar.hairColor" rx="10" />
+              <ellipse cx="100" cy="55" rx="54" ry="35" [attr.fill]="avatar.hairColor || '#3B2414'" />
+              <rect x="48" y="65" width="104" height="60" [attr.fill]="avatar.hairColor || '#3B2414'" rx="10" />
             </g>
             
             <!-- Ponytail -->
             <g *ngIf="avatar.hairStyle === 'ponytail'">
-              <ellipse cx="100" cy="55" rx="50" ry="30" [attr.fill]="avatar.hairColor" />
-              <ellipse cx="145" cy="80" rx="15" ry="25" [attr.fill]="avatar.hairColor" />
+              <ellipse cx="100" cy="55" rx="50" ry="30" [attr.fill]="avatar.hairColor || '#3B2414'" />
+              <ellipse cx="145" cy="80" rx="15" ry="25" [attr.fill]="avatar.hairColor || '#3B2414'" />
             </g>
           </g>
           
@@ -44,38 +76,116 @@
           <circle cx="85" cy="75" r="5" fill="#000000" />
           <circle cx="115" cy="75" r="5" fill="#000000" />
           
+          <!-- Glasses -->
+          <g *ngIf="avatar.glasses">
+            <rect x="75" y="70" width="20" height="15" fill="none" stroke="#333333" stroke-width="2" rx="3"/>
+            <rect x="105" y="70" width="20" height="15" fill="none" stroke="#333333" stroke-width="2" rx="3"/>
+            <line x1="95" y1="77" x2="105" y2="77" stroke="#333333" stroke-width="2"/>
+            <line x1="75" y1="77" x2="65" y2="77" stroke="#333333" stroke-width="2"/>
+            <line x1="125" y1="77" x2="135" y2="77" stroke="#333333" stroke-width="2"/>
+          </g>
+          
+          <!-- Head Bandana -->
+          <g *ngIf="avatar.headBandana && avatar.hairStyle && avatar.hairStyle !== 'bald'">
+            <ellipse cx="100" cy="65" rx="52" ry="8" fill="#E74C3C"/>
+            <circle cx="145" cy="65" r="5" fill="#C0392B"/>
+          </g>
+          
           <!-- Nose -->
           <line x1="100" y1="85" x2="100" y2="95" stroke="#000000" stroke-width="2" />
           
           <!-- Mouth -->
           <path d="M 90 105 Q 100 110 110 105" stroke="#000000" stroke-width="2" fill="none" />
           
-          <!-- Neck -->
-          <rect x="85" y="125" width="30" height="15" [attr.fill]="avatar.skinColor" />
-          
-          <!-- Shirt/Body -->
-          <g *ngIf="avatar.gender === 'male'">
-            <rect x="60" y="140" width="80" height="70" [attr.fill]="avatar.shirtColor" rx="5" />
-            <line x1="100" y1="140" x2="100" y2="210" stroke="#000000" stroke-width="1" opacity="0.2" />
+          <!-- Role Badge -->
+          <g *ngIf="avatar.role === 'estudiante'">
+            <circle cx="135" cy="60" r="18" fill="#4A90E2" stroke="#fff" stroke-width="2"/>
+            <text x="135" y="67" text-anchor="middle" font-size="20" fill="#fff">🎓</text>
+          </g>
+          <g *ngIf="avatar.role === 'docente'">
+            <circle cx="135" cy="60" r="18" fill="#E74C3C" stroke="#fff" stroke-width="2"/>
+            <text x="135" y="67" text-anchor="middle" font-size="20" fill="#fff">👨‍🏫</text>
+          </g>
+          <g *ngIf="avatar.role === 'administrativo'">
+            <circle cx="135" cy="60" r="18" fill="#2ECC71" stroke="#fff" stroke-width="2"/>
+            <text x="135" y="67" text-anchor="middle" font-size="20" fill="#fff">💼</text>
           </g>
           
-          <g *ngIf="avatar.gender === 'female'">
-            <path d="M 70 140 L 130 140 L 135 210 L 65 210 Z" 
-                  [attr.fill]="avatar.shirtColor" />
+          <!-- Neck -->
+          <rect x="85" y="125" width="30" height="15" [attr.fill]="avatar.skinColor || '#F4C4A0'" />
+          
+          <!-- Shirt/Body - T-Shirt -->
+          <g *ngIf="avatar.shirtType === 'tshirt'">
+            <rect x="60" y="140" width="80" height="70" [attr.fill]="avatar.shirtColor || '#4A90E2'" rx="5" />
+            <line x1="100" y1="140" x2="100" y2="210" stroke="#000000" stroke-width="1" opacity="0.2" />
+            
+            <!-- Chest Bandana for T-Shirt -->
+            <g *ngIf="avatar.chestBandana">
+              <rect x="75" y="155" width="50" height="8" fill="#E74C3C" rx="2"/>
+              <polygon points="120,159 125,155 125,163" fill="#C0392B"/>
+            </g>
+          </g>
+          
+          <!-- Shirt/Body - Hoodie -->
+          <g *ngIf="avatar.shirtType === 'hoodie'">
+            <rect x="60" y="140" width="80" height="70" [attr.fill]="avatar.shirtColor || '#4A90E2'" rx="5" />
+            <!-- Hood -->
+            <path d="M 70 140 Q 100 125 130 140" [attr.fill]="avatar.shirtColor || '#4A90E2'" stroke="#000000" stroke-width="1" opacity="0.3"/>
+            <!-- Zipper -->
+            <line x1="100" y1="140" x2="100" y2="210" stroke="#666666" stroke-width="3" />
+            <circle cx="100" cy="145" r="3" fill="#888888"/>
+            <circle cx="100" cy="160" r="3" fill="#888888"/>
+            <circle cx="100" cy="175" r="3" fill="#888888"/>
+            <circle cx="100" cy="190" r="3" fill="#888888"/>
+            <circle cx="100" cy="205" r="3" fill="#888888"/>
+            <!-- Pockets -->
+            <rect x="65" y="170" width="15" height="20" [attr.fill]="avatar.shirtColor || '#4A90E2'" stroke="#000000" stroke-width="1" opacity="0.3" rx="2"/>
+            <rect x="120" y="170" width="15" height="20" [attr.fill]="avatar.shirtColor || '#4A90E2'" stroke="#000000" stroke-width="1" opacity="0.3" rx="2"/>
+            
+            <!-- Chest Bandana for Hoodie -->
+            <g *ngIf="avatar.chestBandana">
+              <rect x="75" y="155" width="50" height="8" fill="#E74C3C" rx="2"/>
+              <polygon points="120,159 125,155 125,163" fill="#C0392B"/>
+            </g>
           </g>
           
           <!-- Arms -->
-          <rect x="40" y="145" width="20" height="60" [attr.fill]="avatar.shirtColor" rx="10" />
-          <rect x="140" y="145" width="20" height="60" [attr.fill]="avatar.shirtColor" rx="10" />
-          <circle cx="50" cy="205" r="8" [attr.fill]="avatar.skinColor" />
-          <circle cx="150" cy="205" r="8" [attr.fill]="avatar.skinColor" />
+          <rect x="40" y="145" width="20" height="60" [attr.fill]="avatar.shirtColor || '#4A90E2'" rx="10" />
+          <rect x="140" y="145" width="20" height="60" [attr.fill]="avatar.shirtColor || '#4A90E2'" rx="10" />
+          <circle cx="50" cy="205" r="8" [attr.fill]="avatar.skinColor || '#F4C4A0'" />
+          <circle cx="150" cy="205" r="8" [attr.fill]="avatar.skinColor || '#F4C4A0'" />
           
-          <!-- Pants -->
+          <!-- Pants/Shorts/Skirt -->
           <g>
-            <rect x="65" y="210" width="30" height="70" [attr.fill]="avatar.pantsColor" />
-            <rect x="105" y="210" width="30" height="70" [attr.fill]="avatar.pantsColor" />
-            <line x1="80" y1="210" x2="80" y2="280" stroke="#000000" stroke-width="1" opacity="0.2" />
-            <line x1="120" y1="210" x2="120" y2="280" stroke="#000000" stroke-width="1" opacity="0.2" />
+            <!-- Regular Pants -->
+            <g *ngIf="avatar.pantsType === 'pants'">
+              <rect x="65" y="210" width="30" height="70" [attr.fill]="avatar.pantsColor || '#2C3E50'" />
+              <rect x="105" y="210" width="30" height="70" [attr.fill]="avatar.pantsColor || '#2C3E50'" />
+              <line x1="80" y1="210" x2="80" y2="280" stroke="#000000" stroke-width="1" opacity="0.2" />
+              <line x1="120" y1="210" x2="120" y2="280" stroke="#000000" stroke-width="1" opacity="0.2" />
+            </g>
+            
+            <!-- Shorts -->
+            <g *ngIf="avatar.pantsType === 'shorts'">
+              <rect x="65" y="210" width="30" height="40" [attr.fill]="avatar.pantsColor || '#2C3E50'" rx="3"/>
+              <rect x="105" y="210" width="30" height="40" [attr.fill]="avatar.pantsColor || '#2C3E50'" rx="3"/>
+              <line x1="80" y1="210" x2="80" y2="250" stroke="#000000" stroke-width="1" opacity="0.2" />
+              <line x1="120" y1="210" x2="120" y2="250" stroke="#000000" stroke-width="1" opacity="0.2" />
+              <!-- Legs visible -->
+              <rect x="68" y="250" width="24" height="30" [attr.fill]="avatar.skinColor || '#F4C4A0'" />
+              <rect x="108" y="250" width="24" height="30" [attr.fill]="avatar.skinColor || '#F4C4A0'" />
+            </g>
+            
+            <!-- Skirt -->
+            <g *ngIf="avatar.pantsType === 'skirt'">
+              <path d="M 65 210 L 60 260 L 90 260 L 85 210 Z" [attr.fill]="avatar.pantsColor || '#2C3E50'" />
+              <path d="M 115 210 L 110 260 L 140 260 L 135 210 Z" [attr.fill]="avatar.pantsColor || '#2C3E50'" />
+              <line x1="75" y1="210" x2="75" y2="260" stroke="#000000" stroke-width="1" opacity="0.15" />
+              <line x1="125" y1="210" x2="125" y2="260" stroke="#000000" stroke-width="1" opacity="0.15" />
+              <!-- Legs visible -->
+              <rect x="65" y="260" width="25" height="20" [attr.fill]="avatar.skinColor || '#F4C4A0'" />
+              <rect x="110" y="260" width="25" height="20" [attr.fill]="avatar.skinColor || '#F4C4A0'" />
+            </g>
           </g>
           
           <!-- Shoes -->
@@ -85,9 +195,6 @@
       </div>
       
       <div class="action-buttons">
-        <button (click)="randomizeAvatar()" class="btn btn-secondary">
-          🎲 Aleatorio
-        </button>
         <button (click)="resetAvatar()" class="btn btn-secondary">
           🔄 Reiniciar
         </button>
@@ -98,21 +205,17 @@
     <div class="customization-panel">
       <h2>Personalización</h2>
       
-      <!-- Gender Selection -->
+      <!-- Role Selection -->
       <div class="option-group">
-        <label class="option-label">1. Género</label>
-        <div class="button-group">
+        <label class="option-label">1. Rol en el Campus</label>
+        <div class="button-group role-group">
           <button 
-            [class.active]="avatar.gender === 'male'"
-            (click)="avatar.gender = 'male'; onGenderChange()"
-            class="btn-option">
-            👨 Masculino
-          </button>
-          <button 
-            [class.active]="avatar.gender === 'female'"
-            (click)="avatar.gender = 'female'; onGenderChange()"
-            class="btn-option">
-            👩 Femenino
+            *ngFor="let role of roles"
+            [class.active]="avatar.role === role.value"
+            (click)="avatar.role = role.value; onOptionChange()"
+            class="btn-option btn-role">
+            <span class="role-icon">{{ role.icon }}</span>
+            <span class="role-name">{{ role.name }}</span>
           </button>
         </div>
       </div>
@@ -124,7 +227,7 @@
           <button 
             *ngFor="let color of skinColors"
             [class.active]="avatar.skinColor === color.value"
-            (click)="avatar.skinColor = color.value"
+            (click)="avatar.skinColor = color.value; onOptionChange()"
             class="color-option"
             [style.background-color]="color.value"
             [attr.aria-label]="color.name">
@@ -140,7 +243,7 @@
           <button 
             *ngFor="let color of hairColors"
             [class.active]="avatar.hairColor === color.value"
-            (click)="avatar.hairColor = color.value"
+            (click)="avatar.hairColor = color.value; onOptionChange()"
             class="color-option"
             [style.background-color]="color.value"
             [attr.aria-label]="color.name">
@@ -154,9 +257,9 @@
         <label class="option-label">Corte de Cabello</label>
         <div class="button-group">
           <button 
-            *ngFor="let style of currentHairStyles"
+            *ngFor="let style of hairStyles"
             [class.active]="avatar.hairStyle === style.value"
-            (click)="avatar.hairStyle = style.value"
+            (click)="avatar.hairStyle = style.value; onOptionChange()"
             class="btn-option">
             {{ style.name }}
           </button>
@@ -166,11 +269,42 @@
       <!-- Shirt Color -->
       <div class="option-group">
         <label class="option-label">4. Color de Camiseta</label>
-        <div class="color-grid">
+        <div class="color-grid color-grid-extended">
           <button 
             *ngFor="let color of shirtColors"
             [class.active]="avatar.shirtColor === color.value"
-            (click)="avatar.shirtColor = color.value"
+            (click)="avatar.shirtColor = color.value; onOptionChange()"
+            class="color-option"
+            [style.background-color]="color.value"
+            [style.color]="color.value === '#FFFFFF' || color.value === '#F1C40F' ? '#000' : '#FFF'"
+            [attr.aria-label]="color.name">
+            <span class="color-name">{{ color.name }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Shirt Type -->
+      <div class="option-group">
+        <label class="option-label">Tipo de Prenda Superior</label>
+        <div class="button-group">
+          <button 
+            *ngFor="let type of shirtTypes"
+            [class.active]="avatar.shirtType === type.value"
+            (click)="avatar.shirtType = type.value; onOptionChange()"
+            class="btn-option">
+            {{ type.name }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Pants Color -->
+      <div class="option-group">
+        <label class="option-label">5. Color de Parte Inferior</label>
+        <div class="color-grid color-grid-extended">
+          <button 
+            *ngFor="let color of pantsColors"
+            [class.active]="avatar.pantsColor === color.value"
+            (click)="avatar.pantsColor = color.value; onOptionChange()"
             class="color-option"
             [style.background-color]="color.value"
             [style.color]="color.value === '#FFFFFF' ? '#000' : '#FFF'"
@@ -180,29 +314,54 @@
         </div>
       </div>
 
-      <!-- Pants Color -->
+      <!-- Pants Type -->
       <div class="option-group">
-        <label class="option-label">5. Color de Pantalón</label>
-        <div class="color-grid">
+        <label class="option-label">Tipo de Prenda Inferior</label>
+        <div class="button-group">
           <button 
-            *ngFor="let color of pantsColors"
-            [class.active]="avatar.pantsColor === color.value"
-            (click)="avatar.pantsColor = color.value"
-            class="color-option"
-            [style.background-color]="color.value"
-            [attr.aria-label]="color.name">
-            <span class="color-name">{{ color.name }}</span>
+            *ngFor="let type of pantsTypes"
+            [class.active]="avatar.pantsType === type.value"
+            (click)="avatar.pantsType = type.value; onOptionChange()"
+            class="btn-option">
+            {{ type.name }}
           </button>
         </div>
       </div>
 
-      <!-- Save/Load Buttons -->
+      <!-- Accessories -->
+      <div class="option-group accessories-group">
+        <label class="option-label">Accesorios (Opcionales)</label>
+        <div class="accessories-container">
+          <label class="accessory-checkbox">
+            <input 
+              type="checkbox" 
+              [(ngModel)]="avatar.glasses"
+              (change)="onOptionChange()">
+            <span class="accessory-label">👓 Gafas</span>
+          </label>
+          
+          <label class="accessory-checkbox">
+            <input 
+              type="checkbox" 
+              [(ngModel)]="avatar.headBandana"
+              (change)="onOptionChange()">
+            <span class="accessory-label">🎀 Pañoleta en el Cabello</span>
+          </label>
+          
+          <label class="accessory-checkbox">
+            <input 
+              type="checkbox" 
+              [(ngModel)]="avatar.chestBandana"
+              (change)="onOptionChange()">
+            <span class="accessory-label">🧣 Pañoleta en el Pecho</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Save Button -->
       <div class="save-section">
-        <button (click)="saveAvatar()" class="btn btn-primary">
+        <button (click)="saveAvatar()" class="btn btn-primary btn-full">
           💾 Guardar Avatar
-        </button>
-        <button (click)="loadAvatar()" class="btn btn-primary">
-          📂 Cargar Avatar
         </button>
       </div>
     </div>

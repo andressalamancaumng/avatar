@@ -1,9 +1,123 @@
 // src/app/avatar-creator/avatar-creator.component.scss
+
+// Loading Screen Styles
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.loading-content {
+  text-align: center;
+  color: white;
+}
+
+.dna-container {
+  margin-bottom: 30px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dna-helix {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  animation: rotate 2s linear infinite;
+}
+
+.dna-strand {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 4px solid transparent;
+  border-top-color: #fff;
+  border-right-color: #fff;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+
+  &:nth-child(2) {
+    animation-delay: -0.75s;
+    border-top-color: rgba(255, 255, 255, 0.5);
+    border-right-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.7; }
+}
+
+.loading-title {
+  font-size: 2rem;
+  margin: 0 0 30px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); }
+  50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.3); }
+}
+
+.loading-bar-container {
+  width: 300px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 0 auto 15px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.loading-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #fff, #f0f0f0, #fff);
+  background-size: 200% 100%;
+  border-radius: 10px;
+  transition: width 0.3s ease;
+  animation: shimmer 1.5s infinite;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.loading-percentage {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  opacity: 0.9;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// Main App Styles
 .avatar-creator {
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  animation: fadeIn 0.5s ease-in;
 }
 
 .header {
@@ -19,9 +133,87 @@
   
   p {
     font-size: 1.2rem;
-    margin: 10px 0 0 0;
+    margin: 10px 0 20px 0;
     opacity: 0.9;
   }
+}
+
+// Commitment Progress Bar
+.commitment-section {
+  max-width: 600px;
+  margin: 20px auto 0;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.commitment-label {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: white;
+  text-align: center;
+}
+
+.commitment-message {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+  margin-bottom: 12px;
+  min-height: 24px;
+  font-style: italic;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.5s ease-in;
+}
+
+.commitment-bar-container {
+  width: 100%;
+  height: 30px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.commitment-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #2ECC71, #27AE60);
+  border-radius: 15px;
+  transition: width 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  box-shadow: 0 0 15px rgba(46, 204, 113, 0.6);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: progressShine 2s infinite;
+  }
+}
+
+@keyframes progressShine {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.commitment-percentage {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  z-index: 1;
 }
 
 .content {
@@ -130,6 +322,12 @@
   flex-wrap: wrap;
 }
 
+.role-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+
 .btn-option {
   flex: 1;
   min-width: 120px;
@@ -156,10 +354,30 @@
   }
 }
 
+.btn-role {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 12px;
+}
+
+.role-icon {
+  font-size: 2rem;
+}
+
+.role-name {
+  font-size: 0.95rem;
+}
+
 .color-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 10px;
+}
+
+.color-grid-extended {
+  grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
 }
 
 .color-option {
@@ -244,4 +462,60 @@
   button {
     flex: 1;
   }
+}
+
+.btn-full {
+  width: 100%;
+}
+
+// Accessories Styles
+.accessories-group {
+  background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px dashed #667eea;
+}
+
+.accessories-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.accessory-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: #667eea;
+    background: #f8f9ff;
+    transform: translateX(5px);
+  }
+  
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #667eea;
+  }
+  
+  &:has(input:checked) {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+  }
+}
+
+.accessory-label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  user-select: none;
 }
