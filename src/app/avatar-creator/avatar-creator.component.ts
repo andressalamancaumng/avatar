@@ -15,6 +15,7 @@ interface AvatarOptions {
   glasses: boolean;
   headBandana: boolean;
   chestBandana: boolean;
+  coreValue: string;
 }
 
 @Component({
@@ -28,6 +29,11 @@ export class AvatarCreatorComponent implements OnInit {
   isLoading = true;
   loadingProgress = 0;
   commitmentProgress = 0;
+  showCoreValuePopup = false;
+  showCustomizationScreen = false;
+  showCustomizationMenu = false;
+  currentCustomizationOption: string | null = null;
+  currentYear = new Date().getFullYear();
 
   avatar: AvatarOptions = {
     role: null,
@@ -40,7 +46,8 @@ export class AvatarCreatorComponent implements OnInit {
     pantsColor: '',
     glasses: false,
     headBandana: false,
-    chestBandana: false
+    chestBandana: false,
+    coreValue: ''
   };
 
   roles = [
@@ -116,6 +123,12 @@ export class AvatarCreatorComponent implements OnInit {
     { name: 'Rosa', value: '#FF69B4' }
   ];
 
+  coreValues = [
+    { name: 'Respeto la privacidad', icon: '🔒', description: 'Protejo la información personal de los demás' },
+    { name: 'Escucho sin juzgar', icon: '👂', description: 'Ofrezco un espacio seguro para compartir' },
+    { name: 'Actúo contra la violencia', icon: '🛡️', description: 'Intervengo cuando veo situaciones de riesgo' }
+  ];
+
   ngOnInit() {
     this.simulateLoading();
     this.updateCommitmentProgress();
@@ -142,8 +155,10 @@ export class AvatarCreatorComponent implements OnInit {
       return 'Identificando tu lugar en el campus...';
     } else if (this.commitmentProgress > 25 && this.commitmentProgress <= 50) {
       return 'Construyendo tu voz en la comunidad...';
-    } else if (this.commitmentProgress > 50 && this.commitmentProgress <= 75) {
+    } else if (this.commitmentProgress > 50 && this.commitmentProgress < 75) {
       return 'Definiendo tu compromiso ético...';
+    } else if (this.commitmentProgress >= 75 && this.commitmentProgress < 100) {
+      return 'Tu valor guía está activado...';
     } else {
       return '¡Compromiso Activado! Eres un guardián/a del campus.';
     }
@@ -151,26 +166,32 @@ export class AvatarCreatorComponent implements OnInit {
 
   updateCommitmentProgress() {
     let progress = 0;
-    
+
     // 25% por seleccionar el rol
     if (this.avatar.role) {
       progress += 25;
     }
-    
+
     // 25% más por completar todos los demás campos obligatorios (5% cada uno)
     if (this.avatar.skinColor) progress += 5;
     if (this.avatar.hairColor) progress += 5;
     if (this.avatar.hairStyle) progress += 5;
     if (this.avatar.shirtColor) progress += 5;
     if (this.avatar.pantsColor) progress += 5;
-    
+
+    // 25% adicional por seleccionar un valor clave
+    if (this.avatar.coreValue) {
+      progress += 25;
+    }
+
     // Los accesorios y tipos son opcionales, no afectan el progreso
-    
+
     this.commitmentProgress = progress;
   }
 
   onOptionChange() {
     this.updateCommitmentProgress();
+    this.closeCustomizationScreen();
   }
 
   resetAvatar() {
@@ -185,14 +206,15 @@ export class AvatarCreatorComponent implements OnInit {
       pantsColor: '',
       glasses: false,
       headBandana: false,
-      chestBandana: false
+      chestBandana: false,
+      coreValue: ''
     };
     this.updateCommitmentProgress();
   }
 
   randomizeAvatar() {
     const randomItem = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
-    
+
     this.avatar.role = randomItem(this.roles).value as 'estudiante' | 'docente' | 'administrativo';
     this.avatar.skinColor = randomItem(this.skinColors).value;
     this.avatar.hairColor = randomItem(this.hairColors).value;
@@ -204,14 +226,58 @@ export class AvatarCreatorComponent implements OnInit {
     this.avatar.glasses = Math.random() > 0.5;
     this.avatar.headBandana = Math.random() > 0.7;
     this.avatar.chestBandana = Math.random() > 0.7;
-    
+    this.avatar.coreValue = '';
+
     this.updateCommitmentProgress();
   }
 
   saveAvatar() {
+    // Verificar si el progreso es al menos 50%
+    if (this.commitmentProgress < 50) {
+      alert('⚠️ Debes personalizar más tu avatar para poder guardarlo. Completa al menos el 50% de la barra de compromiso.');
+      return;
+    }
+
+    // Mostrar popup de valores clave
+    this.showCoreValuePopup = true;
+  }
+
+  selectCoreValue(value: string) {
+    this.avatar.coreValue = value;
+    this.showCoreValuePopup = false;
+    this.updateCommitmentProgress();
+
+    // Guardar avatar después de seleccionar el valor
     const avatarData = JSON.stringify(this.avatar);
     localStorage.setItem('myAvatar', avatarData);
-    alert('¡Avatar guardado exitosamente!');
+
+    // Mostrar mensaje de éxito
+    setTimeout(() => {
+      alert('¡Avatar guardado exitosamente! Tu compromiso ha sido registrado.');
+    }, 300);
+  }
+
+  closeCoreValuePopup() {
+    this.showCoreValuePopup = false;
+  }
+
+  openCustomizationMenu() {
+    this.showCustomizationMenu = true;
+  }
+
+  closeCustomizationMenu() {
+    this.showCustomizationMenu = false;
+  }
+
+  openCustomizationScreen(option: string) {
+    this.currentCustomizationOption = option;
+    this.showCustomizationScreen = true;
+    this.showCustomizationMenu = false;
+  }
+
+  closeCustomizationScreen() {
+    this.showCustomizationScreen = false;
+    this.currentCustomizationOption = null;
   }
 
   loadAvatar() {
